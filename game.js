@@ -3,6 +3,11 @@ const $wordZone = document.querySelector('.word-zone');
 let startedGame = false;
 
 // ----------------------------------------------------------------
+// ------------------------ Game constants ------------------------
+// ----------------------------------------------------------------
+const malusScoreWordRemoved = -5;
+
+// ----------------------------------------------------------------
 // ----------------------------- Game -----------------------------
 // ----------------------------------------------------------------
 
@@ -35,7 +40,7 @@ function removeRandomlyWords() {
     let interval = Math.floor(Math.random() * 4000);
     if($wordZone.firstChild) {
         removeWord();
-        console.log(interval);
+        modifyScore(malusScoreWordRemoved);
     }
     setTimeout(removeRandomlyWords, interval);
 }
@@ -49,4 +54,11 @@ function chooseRandomWord() {
 
 function removeWord() {
     $removedWord = $wordZone.firstChild.remove();
+}
+
+function modifyScore(variation) {
+    let $score = document.querySelector('.score-zone .score');
+    let score = parseInt($score.innerHTML);
+    score += variation;
+    $score.innerHTML = score;
 }

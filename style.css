@@ -6,6 +6,7 @@ body {
 
   width: 100vw;
   height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .game-zone {
@@ -19,6 +20,10 @@ body {
   flex: 1;
 
   background-color: darkgreen;
+}
+
+.score-zone {
+  text-align: center;
 }
 
 .player-zone {
