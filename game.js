@@ -1,6 +1,7 @@
 const $playerZone = document.querySelector('.player-zone');
 const $wordZone = document.querySelector('.word-zone');
 let startedGame = false;
+let currentInput = '';
 
 // ----------------------------------------------------------------
 // ------------------------ Game constants ------------------------
@@ -12,13 +13,17 @@ const malusScoreWordRemoved = -5;
 // ----------------------------------------------------------------
 
 document.addEventListener('keypress', function (event) {
+    let intermediateValue = currentInput + event.key;
+    let foundOneValidElement = hasValidElement($wordZone.children, intermediateValue);
+
     if(!startedGame) {
         startedGame = true;
-        $playerZone.innerHTML = event.key;
+        $playerZone.innerHTML = '';
     }
-    else {
-        $playerZone.innerHTML += event.key;
-    }
+    
+    if(!foundOneValidElement) return;
+    currentInput = intermediateValue;
+    $playerZone.innerText = currentInput;
 });
 
 displayRandomWords();
@@ -43,6 +48,16 @@ function removeRandomlyWords() {
         modifyScore(malusScoreWordRemoved);
     }
     setTimeout(removeRandomlyWords, interval);
+}
+
+function hasValidElement(elementList, value) {
+    let loweredValue = value.toLowerCase();
+
+    for(let $elm of elementList) {
+        let actualText = $elm.innerText.toLowerCase();
+        if(actualText.startsWith(loweredValue)) return true;
+    }
+    return false;
 }
 
 // ----------------------------------------------------------------

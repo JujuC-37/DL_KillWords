@@ -1,3 +1,10 @@
+:root{
+  --heightScoreZone: 30px;
+  --heightPlayerZone: 40px;
+  --heightBody: 100vh;
+  --heightWordZone: calc(var(--heightBody) - var(--heightScoreZone) - var(--heightPlayerZone));
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -5,7 +12,7 @@ body {
   flex-direction: column;
 
   width: 100vw;
-  height: 100vh;
+  height: var(--heightBody);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -18,19 +25,23 @@ body {
 
 .word-zone {
   flex: 1;
-
+  height: var(--heightWordZone);
   background-color: darkgreen;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .score-zone {
   text-align: center;
+  height: var(--heightScoreZone);
 }
 
 .player-zone {
   font-size: 35px;
   line-height: 40px;
   text-align: center;
-  height: 40px;
+  height: var(--heightPlayerZone);
   padding: 10px;
 
   background-color: lightcyan;
