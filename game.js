@@ -6,7 +6,8 @@ let currentInput = '';
 // ----------------------------------------------------------------
 // ------------------------ Game constants ------------------------
 // ----------------------------------------------------------------
-const malusScoreWordRemoved = -5;
+const malusScoreWordRemoved = -8;
+const malusScoreInvalidCharacter = -5;
 
 // ----------------------------------------------------------------
 // ----------------------------- Game -----------------------------
@@ -20,8 +21,10 @@ document.addEventListener('keypress', function (event) {
         startedGame = true;
         $playerZone.innerHTML = '';
     }
-    
-    if(!foundOneValidElement) return;
+
+    if(!foundOneValidElement) {
+        modifyScore(malusScoreInvalidCharacter)
+    };
     currentInput = intermediateValue;
     $playerZone.innerText = currentInput;
 });
@@ -42,7 +45,7 @@ function displayRandomWords() {
 }
 
 function removeRandomlyWords() {
-    let interval = Math.floor(Math.random() * 4000);
+    let interval = Math.floor(3000 + Math.random() * 4000);
     if($wordZone.firstChild) {
         removeWord();
         modifyScore(malusScoreWordRemoved);
@@ -60,7 +63,6 @@ function hasValidElement(elementList, value) {
     return false;
 }
 
-// ----------------------------------------------------------------
 
 function chooseRandomWord() {
     let i = Math.floor(Math.random() * 100) % words.length;
