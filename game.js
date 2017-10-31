@@ -8,6 +8,7 @@ let currentInput = '';
 // ----------------------------------------------------------------
 const malusScoreWordRemoved = -8;
 const malusScoreInvalidCharacter = -5;
+const bonusFoundWord = 20;
 
 // ----------------------------------------------------------------
 // ----------------------------- Game -----------------------------
@@ -16,6 +17,7 @@ const malusScoreInvalidCharacter = -5;
 document.addEventListener('keypress', function (event) {
     let intermediateValue = currentInput + event.key;
     let foundOneValidElement = hasValidElement($wordZone.children, intermediateValue);
+    let foundWord = isValidWord($wordZone.children, intermediateValue);
 
     if(!startedGame) {
         startedGame = true;
@@ -24,8 +26,15 @@ document.addEventListener('keypress', function (event) {
 
     if(!foundOneValidElement) {
         modifyScore(malusScoreInvalidCharacter)
-    };
+    }
     currentInput = intermediateValue;
+    
+    if(foundWord) {
+        removeFoundWord($wordZone.children, currentInput);
+        modifyScore(bonusFoundWord);
+        currentInput = ''; // after remove !!!
+    }
+
     $playerZone.innerText = currentInput;
 });
 
@@ -47,30 +56,28 @@ function displayRandomWords() {
 function removeRandomlyWords() {
     let interval = Math.floor(3000 + Math.random() * 4000);
     if($wordZone.firstChild) {
-        removeWord();
+        removeWordOnTime();
         modifyScore(malusScoreWordRemoved);
     }
     setTimeout(removeRandomlyWords, interval);
 }
-
-function hasValidElement(elementList, value) {
-    let loweredValue = value.toLowerCase();
-
-    for(let $elm of elementList) {
-        let actualText = $elm.innerText.toLowerCase();
-        if(actualText.startsWith(loweredValue)) return true;
-    }
-    return false;
-}
-
 
 function chooseRandomWord() {
     let i = Math.floor(Math.random() * 100) % words.length;
     return words[i];
 }
 
-function removeWord() {
+function removeWordOnTime() {
     $removedWord = $wordZone.firstChild.remove();
+}
+
+function removeFoundWord(elementsList, word) {
+    for(let $elm of elementsList) {
+        if($elm.innerText.toLowerCase() === word.toLowerCase()) {
+            $elm.remove();
+            return;
+        }
+    }
 }
 
 function modifyScore(variation) {
@@ -78,4 +85,24 @@ function modifyScore(variation) {
     let score = parseInt($score.innerHTML);
     score += variation;
     $score.innerHTML = score;
+}
+
+function hasValidElement(elementsList, value) {
+    let loweredValue = value.toLowerCase();
+
+    for(let $elm of elementsList) {
+        let actualText = $elm.innerText.toLowerCase();
+        if(actualText.startsWith(loweredValue)) return true;
+    }
+    return false;
+}
+
+function isValidWord(elementsList, word) {
+    let loweredWord = word.toLowerCase();
+
+    for(let $elm of elementsList) {
+        let actualText = $elm.innerText.toLowerCase();
+        if(actualText === loweredWord) return true;
+    }
+    return false;
 }

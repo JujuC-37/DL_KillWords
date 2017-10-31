@@ -27,9 +27,20 @@ body {
   flex: 1;
   height: var(--heightWordZone);
   background-color: darkgreen;
+  color: white;
+  padding: 10px;
+
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: right;
+}
+
+.word-zone p{
+  margin: 2px;
+  text-align: center;
+  width: 200px;
 }
 
 .score-zone {
