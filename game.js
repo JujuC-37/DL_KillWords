@@ -13,9 +13,17 @@ const bonusFoundWord = 20;
 // ----------------------------------------------------------------
 // ----------------------------- Game -----------------------------
 // ----------------------------------------------------------------
+document.addEventListener('keydown', e => {
+    if(e.keyCode === 8) {
+        deleteLastCharacter();
+        console.log('e.keyCode', e.keyCode);
+    }
+});
 
-document.addEventListener('keypress', function (event) {
-    let intermediateValue = currentInput + event.key;
+document.addEventListener('keypress', e => {
+    if(e.key === 'Enter') return;
+
+    let intermediateValue = currentInput + e.key;
     let foundOneValidElement = hasValidElement($wordZone.children, intermediateValue);
     let foundWord = isValidWord($wordZone.children, intermediateValue);
 
@@ -25,18 +33,20 @@ document.addEventListener('keypress', function (event) {
     }
 
     if(!foundOneValidElement) {
-        modifyScore(malusScoreInvalidCharacter)
-    }
-    currentInput = intermediateValue;
-    
-    if(foundWord) {
-        removeFoundWord($wordZone.children, currentInput);
-        modifyScore(bonusFoundWord);
-        currentInput = ''; // after remove !!!
+        modifyScore(malusScoreInvalidCharacter);
+        return;
     }
 
+    if(foundWord) {    
+        removeFoundWord($wordZone.children, intermediateValue);
+        modifyScore(bonusFoundWord);
+        intermediateValue = '';
+    }
+    
+    currentInput = intermediateValue;
     $playerZone.innerText = currentInput;
 });
+
 
 displayRandomWords();
 removeRandomlyWords();
@@ -105,4 +115,11 @@ function isValidWord(elementsList, word) {
         if(actualText === loweredWord) return true;
     }
     return false;
+}
+
+function deleteLastCharacter() {
+    if(currentInput.length > 0){
+        currentInput = currentInput.slice(0, -1);
+        $playerZone.innerHTML = currentInput;
+    }
 }
